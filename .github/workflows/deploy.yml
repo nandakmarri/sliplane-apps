@@ -1,0 +1,42 @@
+name: Build & Deploy .NET and Java to ACR
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  ACR_NAME: sliplaneregistry.azurecr.io
+  IMAGE_TAG: ${{ github.sha }}
+
+jobs:
+  build-dotnet:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build & Push .NET
+        run: |
+          docker build -t $ACR_NAME/dotnet-app:${IMAGE_TAG} ./dotnet-app
+          echo ${{ secrets.ACR_PASSWORD }} | docker login $ACR_NAME -u ${{ secrets.ACR_USERNAME }} --password-stdin
+          docker push $ACR_NAME/dotnet-app:${IMAGE_TAG}
+
+  build-java:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - run: |
+          cd java-app
+          mvn clean package
+
+      - name: Build & Push Java
+        run: |
+          docker build -t $ACR_NAME/java-app:${IMAGE_TAG} ./java-app
+          echo ${{ secrets.ACR_PASSWORD }} | docker login $ACR_NAME -u ${{ secrets.ACR_USERNAME }} --password-stdin
+          docker push $ACR_NAME/java-app:${IMAGE_TAG}
