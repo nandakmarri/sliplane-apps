@@ -1,11 +1,10 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-app.MapGet("/weather", () =>
-{
-    return new[] {
-        new { Date = DateTime.Now, Temp = 25, Summary = "Sunny" }
-    };
-});
+app.MapGet("/", () => "Hello from Sliplane .NET!");
 
 app.Run();
