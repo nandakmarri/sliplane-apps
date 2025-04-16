@@ -1,23 +1,37 @@
-name: Build & Deploy .NET to ACR
+name: Build & Deploy .NET to ACR with Sliplane
 
 on:
   workflow_dispatch:
 
 env:
   ACR_NAME: mybsacr.azurecr.io
+  IMAGE_NAME: sliplane-dotnet
   IMAGE_TAG: ${{ github.sha }}
 
 jobs:
-  build-dotnet:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
 
-      - name: Log in to ACR
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v3
+
+      - name: Log in to Azure Container Registry
         run: |
           echo ${{ secrets.ACR_PASSWORD }} | docker login $ACR_NAME -u ${{ secrets.ACR_USERNAME }} --password-stdin
 
-      - name: Build & Push .NET App
+      - name: Build & Push Docker Image
         run: |
-          docker build -t $ACR_NAME/sliplane-dotnet:${IMAGE_TAG} .
-          docker push $ACR_NAME/sliplane-dotnet:${IMAGE_TAG}
+          docker build -t $ACR_NAME/${IMAGE_NAME}:${IMAGE_TAG} .
+          docker push $ACR_NAME/${IMAGE_NAME}:${IMAGE_TAG}
+
+      - name: Install Sliplane CLI
+        run: curl -sSL https://cli.sliplane.io/install | sh
+
+      - name: Deploy with Sliplane
+        env:
+          SLIPLANE_API_KEY: ${{ secrets.SLIPLANE_API_KEY }}
+        run: |
+          ~/.sliplane/sliplane deploy \
+            --service ${IMAGE_NAME} \
+            --image $ACR_NAME/${IMAGE_NAME}:${IMAGE_TAG}
