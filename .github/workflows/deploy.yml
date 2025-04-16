@@ -23,8 +23,8 @@ jobs:
       - name: Build & Push Docker Image
         run: |
           # docker build -f dotnet-app/Dockerfile -t myapp . 
-          docker build -t mybsacr.azurecr.io/sliplane-dotnet .
-          # docker build -t $ACR_NAME/${IMAGE_NAME}:${IMAGE_TAG} ./dotnet-app
+          # docker build -t mybsacr.azurecr.io/sliplane-dotnet .
+          docker build -t $ACR_NAME/${IMAGE_NAME}:${IMAGE_TAG} ./dotnet-app
           docker push $ACR_NAME/${IMAGE_NAME}:${IMAGE_TAG}
 
       - name: Trigger Sliplane Webhook Deployment
