@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 env:
-  ACR_NAME: sliplaneregistry.azurecr.io
+  ACR_NAME: mybsacr.azurecr.io
   IMAGE_TAG: ${{ github.sha }}
 
 jobs:
