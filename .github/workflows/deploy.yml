@@ -27,4 +27,4 @@ jobs:
 
       - name: Trigger Sliplane Webhook Deployment
         run: |
-          curl -X GET "https://app.sliplane.io/webhook/service_45oq4xwbjxzq"
+          curl -X GET "https://api.sliplane.io/deploy/service_mqhq4y09hcq0/dhs_h9my2j2xrgw2nemf7irjse24"          
