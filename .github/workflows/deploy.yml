@@ -30,13 +30,29 @@ jobs:
           docker build -t $ACR_NAME/${IMAGE_NAME}:${IMAGE_TAG} ./dotnet-app
           docker push $ACR_NAME/${IMAGE_NAME}:${IMAGE_TAG}
       
+      # - name: Install Sliplane CLI
+      #   run: curl -sSL https://cli.sliplane.io/install | sh
+
+      # - name: Deploy with Sliplane
+      #   env:
+      #     SLIPLANE_API_KEY: ${{ secrets.SLIPLANE_API_KEY }}
+      #   run: |
+      #     ~/.sliplane/sliplane deploy \
+      #       --service ${IMAGE_NAME} \
+      #       --image $ACR_NAME/${IMAGE_NAME}:${IMAGE_TAG}
+
       - name: Install Sliplane CLI
-        run: curl -sSL https://cli.sliplane.io/install | sh
+        run: |
+          curl -sSL https://cli.sliplane.io/install | sh
+          echo "$HOME/.sliplane" >> $GITHUB_PATH
+          export PATH="$HOME/.sliplane:$PATH"
+          sliplane --version
 
       - name: Deploy with Sliplane
         env:
           SLIPLANE_API_KEY: ${{ secrets.SLIPLANE_API_KEY }}
         run: |
-          ~/.sliplane/sliplane deploy \
+          export PATH="$HOME/.sliplane:$PATH"
+          sliplane deploy \
             --service ${IMAGE_NAME} \
             --image $ACR_NAME/${IMAGE_NAME}:${IMAGE_TAG}
