@@ -25,12 +25,16 @@ jobs:
       #     docker build -t $ACR_NAME/${IMAGE_NAME}:${IMAGE_TAG} .
       #     docker push $ACR_NAME/${IMAGE_NAME}:${IMAGE_TAG}
 
-      - name: Build & Push Docker Image
+      # - name: Build & Push Docker Image
+      #   run: |
+      #     docker build -t $ACR_NAME/${IMAGE_NAME}:${IMAGE_TAG} ./dotnet-app
+      #     docker push $ACR_NAME/${IMAGE_NAME}:${IMAGE_TAG}
+          
+      - name: Build & Push .NET App
         run: |
-          docker build -t $ACR_NAME/${IMAGE_NAME}:${IMAGE_TAG} ./dotnet-app
           docker build -t $ACR_NAME/sliplane-dotnet:${IMAGE_TAG} ./dotnet-app
-          docker push $ACR_NAME/${IMAGE_NAME}:${IMAGE_TAG}
-      
+          docker push $ACR_NAME/sliplane-dotnet:${IMAGE_TAG}
+
       - name: Install Sliplane CLI
         run: curl -sSL https://cli.sliplane.io/install | sh
 
