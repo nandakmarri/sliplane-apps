@@ -33,6 +33,11 @@ jobs:
       - name: Install Sliplane CLI
         run: curl -sSL https://cli.sliplane.io/install | sh
 
+      - name: Install Sliplane CLI
+        run: |
+          curl -sSL https://cli.sliplane.io/install | sh
+          echo "$HOME/.sliplane" >> $GITHUB_PATH
+
       - name: Deploy with Sliplane
         env:
           SLIPLANE_API_KEY: ${{ secrets.SLIPLANE_API_KEY }}
