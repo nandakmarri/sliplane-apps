@@ -30,7 +30,7 @@ jobs:
         run: |
           curl -X POST https://api.sliplane.io/infra/webhooks/github \
             -H "Content-Type: application/json" \
-            -d '{"event":"deploy","branch":"dev"}'
+            -d '{"event":"deploy","branch":"test"}'
       - name: Trigger Sliplane Webhook Deployment
         run: |
-          curl -X GET "https://api.sliplane.io/deploy/service_mqhq4y09hcq0/dhs_h9my2j2xrgw2nemf7irjse24"          
+          curl -X GET "https://api.sliplane.io/deploy/service_tbmprjt4kbzr/dhs_6yfmw0nifdjyw7fhec0c42f8"          
