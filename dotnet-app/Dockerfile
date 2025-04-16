@@ -9,7 +9,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 
 # Copy csproj and restore as distinct layers
-COPY ["dotnet-app/sliplane-dotnet.csproj", "./"]
+COPY ["sliplane-dotnet.csproj", "./"]
 RUN dotnet restore
 
 # Copy the rest of the app and build
