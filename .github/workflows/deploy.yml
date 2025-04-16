@@ -26,7 +26,11 @@ jobs:
           # docker build -t mybsacr.azurecr.io/sliplane-dotnet .
           docker build -t $ACR_NAME/${IMAGE_NAME}:${IMAGE_TAG} ./dotnet-app
           docker push $ACR_NAME/${IMAGE_NAME}:${IMAGE_TAG}
-
+      - name: Trigger Sliplane Deploy
+        run: |
+          curl -X POST https://api.sliplane.io/infra/webhooks/github \
+            -H "Content-Type: application/json" \
+            -d '{"event":"deploy","branch":"dev"}'
       - name: Trigger Sliplane Webhook Deployment
         run: |
           curl -X GET "https://api.sliplane.io/deploy/service_mqhq4y09hcq0/dhs_h9my2j2xrgw2nemf7irjse24"          
