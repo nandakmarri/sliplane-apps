@@ -28,6 +28,7 @@ jobs:
       - name: Build & Push Docker Image
         run: |
           docker build -t $ACR_NAME/${IMAGE_NAME}:${IMAGE_TAG} ./dotnet-app
+          docker build -t $ACR_NAME/sliplane-dotnet:${IMAGE_TAG} ./dotnet-app
           docker push $ACR_NAME/${IMAGE_NAME}:${IMAGE_TAG}
       
       - name: Install Sliplane CLI
